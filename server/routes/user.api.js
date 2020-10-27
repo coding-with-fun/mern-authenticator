@@ -139,7 +139,7 @@ router.post(
         check("password")
             .notEmpty()
             .withMessage("Please enter password.")
-            .isLength({ min: 6 })
+            .isLength({ min: 5 })
             .withMessage("Password must be at least 5 chars long."),
     ],
     async (req, res) => {
@@ -239,17 +239,24 @@ router.patch("/update", userAuth, async (req, res) => {
             options
         );
 
-        return res.status(200).json({
-            status: true,
+        const payload = {
             user: {
-                name: updatedUser.name,
-                email: updatedUser.email,
+                id: updatedUser._id,
             },
-            success: [
-                {
-                    msg: "User updated successfully.",
-                },
-            ],
+        };
+
+        jwt.sign(payload, process.env.JWT_SECRET, (error, token) => {
+            if (error) throw error;
+
+            return res.status(200).json({
+                status: true,
+                token,
+                success: [
+                    {
+                        msg: "User updated successfully.",
+                    },
+                ],
+            });
         });
     } catch (error) {
         console.log(`${error.message}`.red);
