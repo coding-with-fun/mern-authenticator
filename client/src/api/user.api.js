@@ -1,7 +1,6 @@
 import Axios from "axios";
 
-let BASE_URL = process.env.REACT_APP_SERVER_URL;
-BASE_URL = BASE_URL + "/user";
+let BASE_URL = "/user";
 
 export const UserSignUp = async (body) => {
     const URL = BASE_URL + "/signup";
